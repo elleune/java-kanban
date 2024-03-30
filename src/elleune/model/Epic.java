@@ -1,13 +1,14 @@
 
-package tasks;
+package elleune.model;
 
-import java.util.*;
-
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Objects;
 public class Epic extends Task {
     private final List<Integer> subtaskIds = new ArrayList<>();
 
-    public Epic(String description, String name, Status status) {
-        super(description, name, status);
+    public Epic(String description, String name, TaskStatus taskStatus) {
+        super(description, name, taskStatus);
     }
 
     public List<Integer> getSubtaskIds() {
@@ -20,7 +21,9 @@ public class Epic extends Task {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
+        if (this == o) {
+            return true;
+        }
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
@@ -43,4 +46,5 @@ public class Epic extends Task {
                 '}';
     }
 }
+
 

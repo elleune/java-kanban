@@ -1,4 +1,4 @@
-package tasks;
+package elleune.model;
 
 import java.util.Objects;
 
@@ -6,12 +6,12 @@ public class Task {
     private String description;
     private int id;
     private String name;
-    private Status status;
+    private TaskStatus taskStatus;
 
-    public Task(String description, String name, Status status) {
+    public Task(String description, String name, TaskStatus taskStatus) {
         this.description = description;
         this.name = name;
-        this.status = status;
+        this.taskStatus = taskStatus;
     }
 
     public String getDescription() {
@@ -38,12 +38,12 @@ public class Task {
         this.name = name;
     }
 
-    public Status getStatus() {
-        return status;
+    public TaskStatus getStatus() {
+        return taskStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
     }
 
     @Override
@@ -52,12 +52,12 @@ public class Task {
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
         return id == task.id && Objects.equals(description, task.description) && Objects.equals(name, task.name)
-                && status == task.status;
+                && taskStatus == task.taskStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, id, name, status);
+        return Objects.hash(description, id, name, taskStatus);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class Task {
                 "description='" + description + '\'' +
                 ", id=" + id +
                 ", name='" + name + '\'' +
-                ", status=" + status +
+                ", status=" + taskStatus +
                 '}';
     }
 }

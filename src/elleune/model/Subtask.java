@@ -1,12 +1,13 @@
-package tasks;
+package elleune.model;
 
+import elleune.service.TaskManager;
 import java.util.Objects;
 
 public class Subtask extends Task {
     private final int epicId;
 
-    public Subtask(String description, String name, Status status, int epicId) {
-        super(description, name, status);
+    public Subtask(String description, String name, TaskStatus taskStatus, int epicId) {
+        super(description, name, taskStatus);
         this.epicId = epicId;
     }
 
@@ -25,6 +26,7 @@ public class Subtask extends Task {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(super.hashCode(), epicId);
     }
 
