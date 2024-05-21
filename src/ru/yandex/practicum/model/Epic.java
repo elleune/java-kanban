@@ -1,20 +1,18 @@
 
-package elleune.model;
+package ru.yandex.practicum.model;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
 public class Epic extends Task {
-    private final List<Integer> subtaskIds = new ArrayList<>();
+    private final ArrayList<Integer> subtaskIds = new ArrayList<>();
 
-    public Epic(String description, String name, TaskStatus taskStatus) {
-        super(description, name, taskStatus);
+    public Epic(String description) {
+        super(description);
     }
 
-    public List<Integer> getSubtaskIds() {
+    public ArrayList<Integer> getSubtaskIds() {
         return subtaskIds;
     }
-
     public void setSubtaskIds(int id) {
         subtaskIds.add(id);
     }
@@ -24,8 +22,12 @@ public class Epic extends Task {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
         Epic epic = (Epic) o;
         return Objects.equals(subtaskIds, epic.subtaskIds);
     }
@@ -46,5 +48,3 @@ public class Epic extends Task {
                 '}';
     }
 }
-
-
