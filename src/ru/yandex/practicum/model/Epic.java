@@ -3,16 +3,17 @@ package ru.yandex.practicum.model;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
 public class Epic extends Task {
     private final ArrayList<Integer> subtaskIds = new ArrayList<>();
 
-    public Epic(String description) {
-        super(description);
-    }
+    public Epic() {
 
+    }
     public ArrayList<Integer> getSubtaskIds() {
         return subtaskIds;
     }
+
     public void setSubtaskIds(int id) {
         subtaskIds.add(id);
     }

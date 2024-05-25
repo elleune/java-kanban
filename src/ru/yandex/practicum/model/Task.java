@@ -1,78 +1,76 @@
 package ru.yandex.practicum.model;
 
 import java.util.Objects;
-
 public class Task {
-        private String description;
-        private Integer id;
-        private String name;
-        private TaskStatus taskStatus;
+private String name;
+private String description;
+private TaskStatus taskStatus;
+private int id;
 
-    public Task(String description) { // для создания задачи
-                this.description = description;
-       }
-
-    public Task(Integer id, String name, String description, TaskStatus taskStatus) { //  для обновления
-        this.id = id;
-        this.name = name;
-        this.description = description;
+    public Task( TaskStatus taskStatus, int id) {
         this.taskStatus = taskStatus;
+        this.id = id;
+            }
+
+    public Task() {
     }
 
+    public String getName() {
+    return name;
+}
 
-    public String getDescription() {
-            return description;
-        }
+public String getDescription() {
+    return description;
+}
 
-        public void setDescription(String description) {
-            this.description = description;
-        }
+public TaskStatus getStatus() {
+    return taskStatus;
+}
 
-        public int getId() {
-            return id;
-        }
+public void setName(String name) {
+    this.name = name;
+}
 
-        public void setId(int id) {
-            this.id = id;
-        }
+public void setDescription(String description) {
+    this.description = description;
+}
 
-        public String getName() {
-            return name;
-        }
+public void setStatus(TaskStatus status) {
+    this.taskStatus = status;
+}
 
-        public void setName(String name) {
-            this.name = name;
-        }
+public int getId() {
+    return id;
+}
 
-        public TaskStatus getStatus() {
-            return taskStatus;
+public void setId(int id) {
+    this.id = id;
+}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
         }
-
-        public void setStatus(TaskStatus taskStatus) {
-            this.taskStatus = taskStatus;
+        if (o == null || getClass() != o.getClass()) {
+            return false;
         }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Task task = (Task) o;
-            return id == task.id && Objects.equals(description, task.description) && Objects.equals(name, task.name)
-                    && taskStatus == task.taskStatus;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(description, id, name, taskStatus);
-        }
-
-        @Override
-        public String toString() {
-            return "Task{" +
-                    "description='" + description + '\'' +
-                    ", id=" + id +
-                    ", name='" + name + '\'' +
-                    ", status=" + taskStatus +
-                    '}';
-        }
+        Task task = (Task) o;
+        return id == task.id && Objects.equals(description, task.description) && Objects.equals(name, task.name)
+                && taskStatus == task.taskStatus;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description, id, name, taskStatus);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "description='" + description + '\'' +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + taskStatus +
+                '}';
+    }
+}
