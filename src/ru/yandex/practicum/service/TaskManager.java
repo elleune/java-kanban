@@ -4,17 +4,16 @@ import ru.yandex.practicum.model.Epic;
 import ru.yandex.practicum.model.Subtask;
 import ru.yandex.practicum.model.Task;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
-    int generateId();
 
-    ArrayList<Task> getTasks();
+    List<Task> getTasks();
 
-    ArrayList<Epic> getEpics();
+    List<Epic> getEpics();
 
-    ArrayList<Subtask> getSubtasks();
+    List<Subtask> getSubtasks();
 
     void deleteAllTasks();
 
@@ -34,15 +33,31 @@ public interface TaskManager {
 
     void updateStatusEpic(Epic epic);
 
-    void updateSubtask(Subtask subtask);
+    Subtask updateSubtask(Subtask subtask);
 
     int createTask(Task task);
 
     int createEpic(Epic epic);
 
     int createSubtask(Subtask subtask);
+
     List<Task> getHistory();
+
     void remove(int id);
+
     ArrayList<Subtask> getEpicSubtasks(int epicId);
+
+    public List<Epic> getAllEpics();
+
+    public List<Task> getAllTasks();
+
+    public List<Subtask> getAllSubtasks();
+
+    public Task getTaskById(int id);
+
+    public Epic getEpicById(int id);
+
+    public Subtask getSubtaskById(int id);
+
 
 }
