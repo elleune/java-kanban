@@ -2,8 +2,9 @@ package ru.yandex.practicum.service;
 
 import ru.yandex.practicum.model.Task;
 
-import java.util.*;
+import java.util.ArrayList;
 
+import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final Map<Integer, Node> requestHistory = new HashMap<>();
@@ -30,16 +31,21 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int id) {
-        Node node = requestHistory.get(id);
         removeNode(requestHistory.remove(id));
     }
 
     @Override
     public List<Task> getHistory() {
+        List<Task> history = new ArrayList<>();
+        Node node = head;
+        while (node != null) {
+            history.add(node.getTask());
+            node = node.getNext();
+        }
         return taskHistory;
     }
 
-    private Node newNode(Task task) {
+            private Node newNode(Task task) {
         final Node node = new Node(tail, task, null);
         if (tail == null) {
             head = node;
@@ -120,3 +126,4 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 }
+

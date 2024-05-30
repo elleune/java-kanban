@@ -17,10 +17,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.yandex.practicum.service.Managers.getDefault;
 
 class TaskManagerTest {
-    TaskManager manager = getDefault();
+
 
     @BeforeEach
-    void beForEach() {
+    void beforeEach() {
+        TaskManager manager = getDefault();
 
         Task task1 = new Task();
         Task task2 = new Task();
@@ -41,11 +42,10 @@ class TaskManagerTest {
         manager.createSubtask(subtask2);
 
     }
-
     @Test
     public void taskEqual() {
         Task task1 = new Task(TaskStatus.NEW, 1);
-        Task task2 = new Task(TaskStatus.NEW, 1);
+        Task task2 = new Task(TaskStatus.NEW, 2);
         Assertions.assertNotEquals(task1, task2);
     }
 
@@ -71,15 +71,17 @@ class TaskManagerTest {
 
     @Test
     void testTasksEqualityById() {
+        TaskManager manager = getDefault();
         Task testTask = new Task();
         manager.createTask(testTask);
-
         assertEquals(testTask, manager.getTaskById(testTask.getId()));
 
     }
 
     @Test
-    void testSubtaskEqualityById() { //субтакс своим же эпиком
+    void testSubtaskEqualityById() {
+        TaskManager manager = getDefault();
+
         Epic testEpic = new Epic();
         manager.createTask(testEpic);
 
@@ -91,6 +93,7 @@ class TaskManagerTest {
 
     @Test
     void testEpicEqualityById() {
+        TaskManager manager = getDefault();
         Epic testEpic = new Epic();
         manager.createTask(testEpic);
         assertEquals(testEpic, manager.getTaskById(testEpic.getId()));
@@ -98,6 +101,7 @@ class TaskManagerTest {
 
     @Test
     void checkForIdConflicts() {
+        TaskManager manager = getDefault();
         Task testTask1 = new Task();
         Task testTask2 = new Task();
 
@@ -110,6 +114,7 @@ class TaskManagerTest {
 
     @Test
     void checkHistoryManagerSavesTaskVersions() {
+        TaskManager manager = getDefault();
         Task chekTask = new Task();
         manager.createTask(chekTask);
         manager.getTaskById(chekTask.getId());
@@ -161,6 +166,7 @@ class TaskManagerTest {
 
     @Test
     public void deleteAllTasks() {
+        TaskManager manager = getDefault();
         manager.deleteAllTasks();
         List<Task> tasks = manager.getAllTasks();
         Assertions.assertEquals(0, tasks.size());
@@ -168,6 +174,7 @@ class TaskManagerTest {
 
     @Test
     public void deleteAllEpics() {
+        TaskManager manager = getDefault();
         manager.deleteAllEpics();
         List<Epic> tasks = manager.getAllEpics();
         Assertions.assertEquals(0, tasks.size());
@@ -175,6 +182,7 @@ class TaskManagerTest {
 
     @Test
     public void deleteAllSubtask() {
+        TaskManager manager = getDefault();
         manager.deleteAllSubtasks();
         List<Subtask> tasks = manager.getAllSubtasks();
         Assertions.assertEquals(0, tasks.size());
