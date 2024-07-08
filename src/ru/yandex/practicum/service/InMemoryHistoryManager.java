@@ -3,35 +3,42 @@ package ru.yandex.practicum.service;
 import ru.yandex.practicum.model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Objects;
 
-import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final Map<Integer, Node> requestHistory = new HashMap<>();
     private Node head;
     private Node tail;
-    private final List<Task> taskHistory = new ArrayList<>();
 
     @Override
     public void add(Task task) {
-        taskHistory.add(task);
-        if (taskHistory.size() > 10) {
-            taskHistory.removeFirst();
+        if (requestHistory.containsKey(task.getId())) {
+            remove(task.getId());
         }
+        linkLast(task);
     }
-
-    @Override
-    public void addToHistory(Task task) {
-        if (task != null) {
-            int taskId = task.getId();
-            removeNode(requestHistory.remove(taskId));
-            requestHistory.put(taskId, newNode(task));
+    private void linkLast(Task task) {
+        Node newNode = new Node(null, task, tail);
+        if (tail != null) {
+            tail.next = newNode;
         }
+        tail = newNode;
+        if (head == null) {
+            head = newNode;
+        }
+        requestHistory.put(task.getId(), newNode);
     }
 
     @Override
     public void remove(int id) {
-        removeNode(requestHistory.remove(id));
+        Node node = requestHistory.remove(id);
+        if (node != null) {
+            removeNode(node);
+        }
     }
 
     @Override
@@ -42,10 +49,10 @@ public class InMemoryHistoryManager implements HistoryManager {
             history.add(node.getTask());
             node = node.getNext();
         }
-        return taskHistory;
+        return history;
     }
 
-            private Node newNode(Task task) {
+    private Node newNode(Task task) {
         final Node node = new Node(tail, task, null);
         if (tail == null) {
             head = node;
@@ -126,4 +133,5 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
     }
 }
+
 
