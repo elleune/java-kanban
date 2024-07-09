@@ -1,24 +1,17 @@
 package ru.yandex.practicum.test;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.BeforeEach;
 
-import ru.yandex.practicum.model.Epic;
 import ru.yandex.practicum.model.Task;
-import ru.yandex.practicum.model.Subtask;
 import ru.yandex.practicum.service.HistoryManager;
 import ru.yandex.practicum.service.Managers;
-import ru.yandex.practicum.service.TaskManager;
-
 
 import java.util.List;
-import java.util.ArrayList;
-
 
 
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.yandex.practicum.service.Managers.getDefault;
+
 
 public class HistoryManagerTest {
 
