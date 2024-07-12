@@ -2,15 +2,29 @@ package ru.yandex.practicum.test;
 
 import org.junit.jupiter.api.Test;
 
+
 import ru.yandex.practicum.model.Task;
 import ru.yandex.practicum.service.HistoryManager;
 import ru.yandex.practicum.service.Managers;
+
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+
+
+
+
+import java.util.List;
+
+
+
+
+
+import static org.junit.jupiter.api.Assertions.*;
+import static ru.yandex.practicum.service.Managers.getDefault;
 
 
 public class HistoryManagerTest {
@@ -35,8 +49,6 @@ public class HistoryManagerTest {
             assertEquals(sizeFromRequestHistoryShouldBe, exampleOfRequestHistoryList.size(), "Ограничение листа "
                     + "не работает");
         }
-
-
 
     @Test
     void add() {
