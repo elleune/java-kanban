@@ -9,8 +9,6 @@ import ru.yandex.practicum.model.Task;
 import ru.yandex.practicum.model.TaskStatus;
 import ru.yandex.practicum.service.TaskManager;
 
-
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.yandex.practicum.service.Managers.getDefault;
 
