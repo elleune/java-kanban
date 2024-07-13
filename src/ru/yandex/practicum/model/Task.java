@@ -2,50 +2,50 @@ package ru.yandex.practicum.model;
 
 import java.util.Objects;
 public class Task {
-private String name;
-private String description;
-private TaskStatus taskStatus;
-private int id;
+    private String name;
+    private String description;
+    private TaskStatus taskStatus;
+    private int id;
 
     public Task( TaskStatus taskStatus, int id) {
         this.taskStatus = taskStatus;
         this.id = id;
-            }
+    }
 
     public Task() {
     }
 
     public String getName() {
-    return name;
-}
+        return name;
+    }
 
-public String getDescription() {
-    return description;
-}
+    public String getDescription() {
+        return description;
+    }
 
-public TaskStatus getStatus() {
-    return taskStatus;
-}
+    public TaskStatus getStatus() {
+        return taskStatus;
+    }
 
-public void setName(String name) {
-    this.name = name;
-}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-public void setDescription(String description) {
-    this.description = description;
-}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-public void setStatus(TaskStatus status) {
-    this.taskStatus = status;
-}
+    public void setStatus(TaskStatus status) {
+        this.taskStatus = status;
+    }
 
-public int getId() {
-    return id;
-}
+    public int getId() {
+        return id;
+    }
 
-public void setId(int id) {
-    this.id = id;
-}
+    public void setId(int id) {
+        this.id = id;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {
