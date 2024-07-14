@@ -1,4 +1,3 @@
-
 package ru.yandex.practicum.model;
 
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ public class Epic extends Task {
     public Epic() {
 
     }
+
     public ArrayList<Integer> getSubtaskIds() {
         return subtaskIds;
     }
@@ -40,12 +40,6 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "Epic{" +
-                "subtaskIds=" + subtaskIds +
-                ", description='" + getDescription() + '\'' +
-                ", id=" + getId() +
-                ", name='" + getName() + '\'' +
-                ", status=" + getStatus() +
-                '}';
+        return "Epic{" + "subtaskIds=" + subtaskIds + ", description='" + getDescription() + '\'' + ", id=" + getId() + ", name='" + getName() + '\'' + ", status=" + getStatus() + '}';
     }
 }

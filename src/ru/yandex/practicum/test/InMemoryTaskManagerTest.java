@@ -20,4 +20,3 @@ public class InMemoryTaskManagerTest {
         assertNotNull(taskManager, "Экземпляр класса не пронициализирован");
     }
 }
-

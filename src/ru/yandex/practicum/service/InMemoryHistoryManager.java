@@ -3,10 +3,9 @@ package ru.yandex.practicum.service;
 import ru.yandex.practicum.model.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-
 
 
 public class InMemoryHistoryManager implements HistoryManager {
