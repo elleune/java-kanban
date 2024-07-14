@@ -1,5 +1,3 @@
-package ru.yandex.practicum.test;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.service.Managers;

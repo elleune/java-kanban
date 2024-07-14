@@ -1,5 +1,3 @@
-package ru.yandex.practicum.test;
-
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.model.Task;
 import ru.yandex.practicum.model.TaskStatus;
