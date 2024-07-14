@@ -3,12 +3,12 @@ package ru.yandex.practicum.model;
 import java.util.Objects;
 
 public class Subtask extends Task {
-    private int epicsId;
+    private int epicId;
 
 
-    public Subtask(int id, TaskStatus taskStatus, int EpicsId) {
+    public Subtask(int id, TaskStatus taskStatus, int epicId) {
         super(taskStatus, id);
-        this.epicsId = EpicsId;
+        this.epicId = epicId;
     }
 
     public Subtask(int id) {
@@ -16,12 +16,12 @@ public class Subtask extends Task {
 
 
     public int getEpicId() {
-        return epicsId;
+        return epicId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), epicsId);
+        return Objects.hash(super.hashCode(), epicId);
     }
 
     @Override
