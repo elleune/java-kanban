@@ -1,6 +1,7 @@
 package ru.yandex.practicum.model;
 
 import java.util.Objects;
+<<<<<<< HEAD
 
 public class Task {
     private String name;
@@ -12,11 +13,24 @@ public class Task {
         this.taskStatus = taskStatus;
         this.id = id;
     }
+=======
+public class Task {
+private String name;
+private String description;
+private TaskStatus taskStatus;
+private int id;
+
+    public Task( TaskStatus taskStatus, int id) {
+        this.taskStatus = taskStatus;
+        this.id = id;
+            }
+>>>>>>> e71f4b7d00e4d84be96015b9208eccc2472a2320
 
     public Task() {
     }
 
     public String getName() {
+<<<<<<< HEAD
         return name;
     }
 
@@ -49,6 +63,38 @@ public class Task {
         this.id = id;
     }
 
+=======
+    return name;
+}
+
+public String getDescription() {
+    return description;
+}
+
+public TaskStatus getStatus() {
+    return taskStatus;
+}
+
+public void setName(String name) {
+    this.name = name;
+}
+
+public void setDescription(String description) {
+    this.description = description;
+}
+
+public void setStatus(TaskStatus status) {
+    this.taskStatus = status;
+}
+
+public int getId() {
+    return id;
+}
+
+public void setId(int id) {
+    this.id = id;
+}
+>>>>>>> e71f4b7d00e4d84be96015b9208eccc2472a2320
     @Override
     public boolean equals(Object o) {
         if (this == o) {

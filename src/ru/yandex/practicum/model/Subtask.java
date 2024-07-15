@@ -6,9 +6,15 @@ public class Subtask extends Task {
     private int epicId;
 
 
+<<<<<<< HEAD
     public Subtask(int id, TaskStatus taskStatus, int epicId) {
         super(taskStatus, id);
         this.epicId = epicId;
+=======
+    public Subtask(int id, TaskStatus taskStatus, int EpicId) {
+        super(taskStatus, id);
+        this.epicId = EpicId;
+>>>>>>> e71f4b7d00e4d84be96015b9208eccc2472a2320
     }
 
     public Subtask(int id) {

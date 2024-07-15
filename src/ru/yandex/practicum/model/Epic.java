@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> e71f4b7d00e4d84be96015b9208eccc2472a2320
 package ru.yandex.practicum.model;
 
 import java.util.ArrayList;
@@ -9,7 +13,10 @@ public class Epic extends Task {
     public Epic() {
 
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> e71f4b7d00e4d84be96015b9208eccc2472a2320
     public ArrayList<Integer> getSubtaskIds() {
         return subtaskIds;
     }
@@ -40,6 +47,16 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
+<<<<<<< HEAD
         return "Epic{" + "subtaskIds=" + subtaskIds + ", description='" + getDescription() + '\'' + ", id=" + getId() + ", name='" + getName() + '\'' + ", status=" + getStatus() + '}';
+=======
+        return "Epic{" +
+                "subtaskIds=" + subtaskIds +
+                ", description='" + getDescription() + '\'' +
+                ", id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", status=" + getStatus() +
+                '}';
+>>>>>>> e71f4b7d00e4d84be96015b9208eccc2472a2320
     }
 }
