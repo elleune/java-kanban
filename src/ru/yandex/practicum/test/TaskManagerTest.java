@@ -1,4 +1,4 @@
-package test;
+package ru.yandex.practicum.test;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -113,6 +113,18 @@ class TaskManagerTest {
 
     }
 
+    @Test
+    void checkHistoryManagerSavesTaskVersions() {
+        TaskManager manager = getDefault();
+        Task chekTask = new Task();
+        manager.createTask(chekTask);
+        manager.getTaskById(chekTask.getId());
+        Task testTask = new Task(TaskStatus.IN_PROGRESS, chekTask.getId());
+        manager.updateTask(testTask);
+        manager.getTaskById(chekTask.getId());
+        assertEquals(chekTask, manager.getHistory().getFirst());
+
+    }
 
         @Test
         void addNewTask () {
