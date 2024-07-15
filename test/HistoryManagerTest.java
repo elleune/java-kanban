@@ -13,8 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class HistoryManagerTest {
 
-
-
     @Test
     void checkSizeOfRequestHistory() {
         HistoryManager historyManager = Managers.getDefaultHistory();
