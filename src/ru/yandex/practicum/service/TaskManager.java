@@ -59,5 +59,4 @@ public interface TaskManager {
 
     public Subtask getSubtaskById(int id);
 
-
 }
