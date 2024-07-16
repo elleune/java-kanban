@@ -58,9 +58,5 @@ public interface TaskManager {
     public Epic getEpicById(int id);
 
     public Subtask getSubtaskById(int id);
-<<<<<<< HEAD
-}
-=======
 
 }
->>>>>>> e71f4b7d00e4d84be96015b9208eccc2472a2320
