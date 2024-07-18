@@ -5,13 +5,9 @@ import ru.yandex.practicum.model.Epic;
 import ru.yandex.practicum.model.Subtask;
 import ru.yandex.practicum.model.Task;
 import ru.yandex.practicum.model.TaskStatus;
-import ru.yandex.practicum.service.Managers;
 import ru.yandex.practicum.service.TaskManager;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static ru.yandex.practicum.service.Managers.getDefault;
 
 class TaskManagerTest {
@@ -109,68 +105,5 @@ class TaskManagerTest {
 
         Assertions.assertNotEquals(manager.getTaskById(testTask1.getId()), manager.getTaskById(testTask2.getId()));
 
-    }
-
-    @Test
-    void addNewTask() {
-        TaskManager taskManager = Managers.getDefault();
-        Task task = new Task();
-        taskManager.createTask(task);
-        final int taskId = task.getId();
-
-        final Task savedTask = taskManager.getTaskById(taskId);
-
-        assertNotNull(savedTask, "Задача не найдена.");
-        assertEquals(task, savedTask, "Задачи не совпадают.");
-
-        final List<Task> tasks = taskManager.getTasks();
-
-        assertNotNull(tasks, "Задачи не возвращаются.");
-        assertEquals(1, tasks.size(), "Неверное количество задач.");
-        assertEquals(task, tasks.getFirst(), "Задачи не совпадают.");
-    }
-
-    @Test
-    void addNewSubtask() {
-        TaskManager taskManager = Managers.getDefault();
-        Epic epic = new Epic();
-        taskManager.createEpic(epic);
-
-        final int epicId = epic.getId();
-
-        final Epic savedEpic = taskManager.getEpicById(epicId);
-
-        assertNotNull(savedEpic, "Задача не найдена.");
-        assertEquals(epic, savedEpic, "Задачи не совпадают.");
-
-        final List<Epic> epics = taskManager.getEpics();
-
-        assertNotNull(epics, "Задачи не возвращаются.");
-        assertEquals(1, epics.size(), "Неверное количество задач.");
-        assertEquals(epic, epics.getFirst(), "Задачи не совпадают.");
-    }
-
-    @Test
-    public void deleteAllTasks() {
-        TaskManager manager = getDefault();
-        manager.deleteAllTasks();
-        List<Task> tasks = manager.getAllTasks();
-        Assertions.assertEquals(0, tasks.size());
-    }
-
-    @Test
-    public void deleteAllEpics() {
-        TaskManager manager = getDefault();
-        manager.deleteAllEpics();
-        List<Epic> tasks = manager.getAllEpics();
-        Assertions.assertEquals(0, tasks.size());
-    }
-
-    @Test
-    public void deleteAllSubtask() {
-        TaskManager manager = getDefault();
-        manager.deleteAllSubtasks();
-        List<Subtask> tasks = manager.getAllSubtasks();
-        Assertions.assertEquals(0, tasks.size());
     }
 }

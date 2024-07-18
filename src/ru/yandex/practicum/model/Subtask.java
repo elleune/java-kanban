@@ -33,6 +33,5 @@ public class Subtask extends Task {
                 ", name='" + getName() + '\'' +
                 ", status=" + getStatus() +
                 '}';
-
     }
 }

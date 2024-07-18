@@ -28,7 +28,7 @@ public class HistoryManagerTest {
         assertEquals(sizeFromRequestHistoryShouldBe, exampleOfRequestHistoryList.size(), "Ограничение листа "
                 + "не работает");
     }
-
+// тесты спринта 6;
     @Test
     void add() {
         HistoryManager historyManager = Managers.getDefaultHistory();
