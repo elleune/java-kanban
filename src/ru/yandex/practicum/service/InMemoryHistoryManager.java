@@ -13,6 +13,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Node head;
     private Node tail;
 // переписан почти полностью класс InMemoryHistoryManager;
+    
     @Override
     public void add(Task task) {
         if (task == null) {
