@@ -12,7 +12,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     private final Map<Integer, Node> nodes = new HashMap<>();
     private Node head;
     private Node tail;
-// переписан почти полностью класс InMemoryHistoryManager;
     @Override
     public void add(Task task) {
         if (task == null) {
