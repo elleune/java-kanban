@@ -12,7 +12,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     private final Map<Integer, ru.yandex.practicum.service.InMemoryHistoryManager.Node> nodes = new HashMap<>();
     private ru.yandex.practicum.service.InMemoryHistoryManager.Node head;
     private ru.yandex.practicum.service.InMemoryHistoryManager.Node tail;
-    
+
     @Override
     public void add(Task task) {
         if (task == null) {
