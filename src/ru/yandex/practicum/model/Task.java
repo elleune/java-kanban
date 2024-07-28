@@ -1,5 +1,6 @@
 package ru.yandex.practicum.model;
 
+
 import java.util.Objects;
 
 public class Task {
@@ -7,6 +8,7 @@ public class Task {
     private String description;
     private TaskStatus taskStatus;
     private int id;
+    protected TaskType taskType;
 
     public Task(TaskStatus taskStatus, int id) {
         this.taskStatus = taskStatus;
@@ -14,6 +16,10 @@ public class Task {
     }
 
     public Task() {
+    }
+
+    public TaskType getTaskType() {
+        return taskType;
     }
 
     public String getName() {
@@ -44,6 +50,9 @@ public class Task {
         return id;
     }
 
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
 
     public void setId(int id) {
         this.id = id;
