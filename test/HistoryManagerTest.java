@@ -1,9 +1,11 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.model.Task;
 import ru.yandex.practicum.model.TaskStatus;
 import ru.yandex.practicum.service.HistoryManager;
 import ru.yandex.practicum.service.InMemoryHistoryManager;
 import ru.yandex.practicum.service.Managers;
+import ru.yandex.practicum.service.TaskManager;
 
 import java.util.List;
 
@@ -12,10 +14,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class HistoryManagerTest {
+    private HistoryManager historyManager;
+    private TaskManager manager;
+
+    @BeforeEach
+    void setUp() {
+        historyManager = Managers.getDefaultHistory();
+        manager = Managers.getDefault();
+    }
 
     @Test
     void checkSizeOfRequestHistory() {
-        HistoryManager historyManager = Managers.getDefaultHistory();
         Task task = new Task();
         final int sizeFromRequestHistoryShouldBe = 1;
         final int sizeForCheckRequestSize = 10;
@@ -29,12 +38,12 @@ public class HistoryManagerTest {
                 + "не работает");
     }
 
+    // тесты спринта 6;
     @Test
-    void add() {
-        HistoryManager historyManager = Managers.getDefaultHistory();
+    void addHistoryList() {
+
         Task task = new Task();
         historyManager.add(task);
-
         final List<Task> history = historyManager.getHistory();
         assertNotNull(history, "История не пустая.");
         assertEquals(1, history.size(), "История не пустая.");
@@ -42,7 +51,6 @@ public class HistoryManagerTest {
 
     @Test
     public void testAddAndRemoveHistory() {
-        HistoryManager historyManager = new InMemoryHistoryManager();
         Task task1 = new Task(TaskStatus.NEW, 1);
         Task task2 = new Task(TaskStatus.IN_PROGRESS, 2);
 
@@ -79,5 +87,16 @@ public class HistoryManagerTest {
         List<Task> history = historyManager.getHistory();
         assertEquals(1, history.size());
         assertEquals(task1, history.get(0));
+    }
+
+    @Test
+    void ensureHistoryCapacityIsNotLimited() {
+        for (int i = 0; i < 15; i++) {
+            manager.createTask(new Task());
+        }
+        for (Task task : manager.getAllTasks()) {
+            manager.getTaskById(task.getId());
+        }
+        assert (manager.getHistory().size() > 10);
     }
 }
