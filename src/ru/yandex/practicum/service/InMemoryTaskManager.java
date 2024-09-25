@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private static Integer id = 0;
+    private int id = 1;
 
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
@@ -23,7 +23,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     public InMemoryTaskManager() {
         historyManager = Managers.getDefaultHistory();
-        id = 0;
+        id = 1;
     }
 
 

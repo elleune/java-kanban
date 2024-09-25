@@ -11,14 +11,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.yandex.practicum.service.Managers.getDefault;
 
 class TaskManagerTest {
+    private TaskStatus taskStatus;
+    private int id;
 
 
     @BeforeEach
     void beforeEach() {
         TaskManager manager = getDefault();
 
-        Task task1 = new Task();
-        Task task2 = new Task();
+        Task task1 = new Task(taskStatus, id);
+        Task task2 = new Task(taskStatus, id);
 
         manager.createTask(task1);
         manager.createTask(task2);
@@ -67,7 +69,7 @@ class TaskManagerTest {
     @Test
     void testTasksEqualityById() {
         TaskManager manager = getDefault();
-        Task testTask = new Task();
+        Task testTask = new Task(taskStatus, id);
         manager.createTask(testTask);
         assertEquals(testTask, manager.getTaskById(testTask.getId()));
 
@@ -97,8 +99,8 @@ class TaskManagerTest {
     @Test
     void checkForIdConflicts() {
         TaskManager manager = getDefault();
-        Task testTask1 = new Task();
-        Task testTask2 = new Task();
+        Task testTask1 = new Task(taskStatus, id);
+        Task testTask2 = new Task(taskStatus, id);
 
         manager.createTask(testTask1);
         manager.createTask(testTask2);
