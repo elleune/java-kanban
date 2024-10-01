@@ -1,7 +1,5 @@
 package ru.yandex.practicum.service;
 
-import java.nio.file.Path;
-
 public class Managers {
 
     private Managers() {

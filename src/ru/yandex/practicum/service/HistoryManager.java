@@ -11,4 +11,3 @@ public interface HistoryManager {
 
     List<Task> getHistory();
 }
-// удален не нужный класс List<Task> getHistory();

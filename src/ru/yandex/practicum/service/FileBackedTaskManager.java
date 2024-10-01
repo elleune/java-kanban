@@ -1,8 +1,10 @@
 package ru.yandex.practicum.service;
 
 
-import ru.yandex.practicum.model.*;
-
+import ru.yandex.practicum.model.Epic;
+import ru.yandex.practicum.model.Subtask;
+import ru.yandex.practicum.model.Task;
+import ru.yandex.practicum.model.TaskStatus;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -17,7 +19,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            bw.write("id,status,type,epic\n");
+            bw.write("id,type,name,status,description,epic\n");
 
             for (Task task : getTasks()) {
                 bw.write(task.toString() + "\n");
@@ -37,22 +39,22 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager fm = new FileBackedTaskManager(file);
         Task task = null;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             br.readLine();
             while (br.ready()) {
                 String line = br.readLine();
                 if (!line.isEmpty() || !line.isBlank()) {
                     task = fromString(line);
                 }
-                switch (task.getTaskType()) {
+                switch (task.getType()) {
                     case TASK:
-                        tasks.put(task.getId(), task);
+                        fm.createTask(task);
                     case EPIC:
-                        epics.put(task.getId(), (Epic) task);
+                        fm.createEpic((Epic) task);
                     case SUBTASK:
-                        assert task instanceof Subtask;
-                        subtasks.put(task.getId(), (Subtask) task);
+                        if (task instanceof Subtask) {
+                            fm.createSubtask((Subtask) task);
+                        }
                 }
             }
         } catch (IOException e) {
@@ -62,24 +64,33 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public static Task fromString(String value) {
-        String[] elements = value.split(",");
-        int id = Integer.parseInt(elements[0]);
-        TaskStatus taskStatus = TaskStatus.valueOf(elements[1]);
-        TaskType type = TaskType.valueOf(elements[2]);
+        String[] line = value.split(",");
+        int id = Integer.parseInt(line[0]);
+        String taskType = line[1];
+        String name = line[2];
+        TaskStatus status = TaskStatus.valueOf(line[3]);
+        String description = line[4];
 
-        switch (type) {
-            case TASK:
-                return new Task(taskStatus, id);
-            case EPIC:
-                return new Epic();
-            case SUBTASK:
-                int epicId = Integer.parseInt(elements[3]);
-                return new Subtask(id, taskStatus, epicId);
+        switch (taskType) {
+            case "TASK":
+                Task task = new Task();
+                task.setStatus(status);
+                task.setId(id);
+                return task;
+            case "EPIC":
+                Epic epic = new Epic();
+                epic.setId(id);
+                return epic;
+            case "SUBTASK":
+                int epicId = Integer.parseInt(line[5]);
+                Subtask subtask = new Subtask(epicId);
+                subtask.setId(id);
+                subtask.setStatus(status);
+                return subtask;
             default:
                 return null;
         }
     }
-
 
     public static void main(String[] args) {
         try {
@@ -227,23 +238,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void deleteSubtaskById(int id) {
         super.deleteSubtaskById(id);
         save();
-    }
-
-    @Override
-    public Task getTaskById(int id) {
-        save();
-        return super.getTaskById(id);
-    }
-
-    @Override
-    public Epic getEpicById(int id) {
-        save();
-        return super.getEpicById(id);
-    }
-
-    @Override
-    public Subtask getSubtaskById(int id) {
-        save();
-        return super.getSubtaskById(id);
     }
 }

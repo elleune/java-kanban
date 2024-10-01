@@ -13,17 +13,17 @@ import java.util.stream.Collectors;
 
 
 public class InMemoryTaskManager implements TaskManager {
-    private static Integer id = 0;
+    private int id = 1;
 
-    protected static final Map<Integer, Task> tasks = new HashMap<>();
-    protected static final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    protected static final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final Map<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
 
     private final HistoryManager historyManager;
 
     public InMemoryTaskManager() {
         historyManager = Managers.getDefaultHistory();
-        id = 0;
+        id = 1;
     }
 
 

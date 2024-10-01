@@ -8,7 +8,7 @@ public class Task {
     private String description;
     private TaskStatus taskStatus;
     private int id;
-    protected TaskType taskType;
+
 
     public Task(TaskStatus taskStatus, int id) {
         this.taskStatus = taskStatus;
@@ -16,10 +16,6 @@ public class Task {
     }
 
     public Task() {
-    }
-
-    public TaskType getTaskType() {
-        return taskType;
     }
 
     public String getName() {
