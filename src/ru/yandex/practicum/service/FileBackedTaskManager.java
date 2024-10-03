@@ -8,9 +8,11 @@ import ru.yandex.practicum.model.TaskStatus;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
+    private static final String CSV_FILE = "id,type,name,status,description,epic\n";
 
     public FileBackedTaskManager(File file) {
         super();
@@ -18,48 +20,86 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private void save() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            bw.write("id,type,name,status,description,epic\n");
+        try {
+            if (Files.exists(file.toPath())) {
+                Files.delete(file.toPath());
+            }
+            Files.createFile(file.toPath());
+        } catch (IOException e) {
+            throw new ManagerSaveException("Не удалось найти файл для записи данных");
+        }
+
+        try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
+            writer.write(CSV_FILE);
 
             for (Task task : getTasks()) {
-                bw.write(task.toString() + "\n");
+                writer.write(task.toString() + "\n");
             }
 
             for (Epic epic : getEpics()) {
-                bw.write(epic.toString() + "\n");
+                writer.write(epic.toString() + "\n");
             }
-            for (Subtask subTask : getSubtasks()) {
-                bw.write(subTask.toString() + "\n");
+            for (Subtask subtask : getSubtasks()) {
+                writer.write(subtask.toString() + "\n");
             }
+
+            writer.write("\n");
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка сохранения в файл.");
+            throw new ManagerSaveException("Не удалось сохранить в файл", e);
         }
     }
 
     public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager fm = new FileBackedTaskManager(file);
-        Task task = null;
-        try (BufferedReader br = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
-            br.readLine();
+        int currentId = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+
             while (br.ready()) {
-                String line = br.readLine();
-                if (!line.isEmpty() || !line.isBlank()) {
-                    task = fromString(line);
-                }
-                switch (task.getType()) {
-                    case TASK:
-                        fm.createTask(task);
-                    case EPIC:
-                        fm.createEpic((Epic) task);
-                    case SUBTASK:
-                        if (task instanceof Subtask) {
-                            fm.createSubtask((Subtask) task);
+                String currentLine = br.readLine();
+                String[] taskParameters = currentLine.split(",");
+
+                switch (taskParameters[1]) {
+                    case "TASK":
+                        Task task = fromString(currentLine);
+
+                        if (task != null) {
+                            int taskId = task.getId();
+                            currentId = Math.max(taskId, currentId);
+
+                            fm.tasks.put(taskId, task);
                         }
+
+                        break;
+                    case "EPIC":
+                        Epic epic = (Epic) fromString(currentLine);
+
+                        if (epic != null) {
+                            int epicId = epic.getId();
+                            currentId = Math.max(epicId, currentId);
+
+                            fm.epics.put(epicId, epic);
+                        }
+
+                        break;
+                    case "SUBTASK":
+                        Subtask subtask = (Subtask) fromString(currentLine);
+
+                        if (subtask != null) {
+                            int subtaskId = subtask.getId();
+                            int epicId = subtask.getEpicId();
+                            currentId = Math.max(subtaskId, currentId);
+
+                            fm.epics.get(epicId).addSubtaskId(subtaskId);
+                            fm.subtasks.put(subtaskId, subtask);
+                        }
+                        break;
                 }
             }
         } catch (IOException e) {
             throw new ManagerLoadException("Ошибка чтения из файла.");
         }
+        ++currentId;
         return fm;
     }
 
@@ -88,9 +128,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 subtask.setStatus(status);
                 return subtask;
             default:
-                return null;
+                throw new IllegalArgumentException("Неизвестный тип: " + taskType);
         }
     }
+
 
     public static void main(String[] args) {
         try {
