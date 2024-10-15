@@ -1,10 +1,7 @@
 package ru.yandex.practicum.service;
 
 
-import ru.yandex.practicum.model.Epic;
-import ru.yandex.practicum.model.Subtask;
-import ru.yandex.practicum.model.Task;
-import ru.yandex.practicum.model.TaskStatus;
+import ru.yandex.practicum.model.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -54,78 +51,76 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         int currentId = 0;
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-
             while (br.ready()) {
                 String currentLine = br.readLine();
-                String[] taskParameters = currentLine.split(",");
 
-                switch (taskParameters[1]) {
-                    case "TASK":
-                        Task task = fromString(currentLine);
-
-                        if (task != null) {
-                            int taskId = task.getId();
-                            currentId = Math.max(taskId, currentId);
-
-                            fm.tasks.put(taskId, task);
-                        }
-
+                final Task task = fromString(currentLine);
+                int taskId = task.getId();
+                currentId = Math.max(taskId, currentId);
+                switch (task.getType()) {
+                    case TaskType.TASK:
+                        fm.tasks.put(taskId, task);
                         break;
-                    case "EPIC":
-                        Epic epic = (Epic) fromString(currentLine);
-
-                        if (epic != null) {
-                            int epicId = epic.getId();
-                            currentId = Math.max(epicId, currentId);
-
-                            fm.epics.put(epicId, epic);
-                        }
-
+                    case TaskType.EPIC:
+                        fm.epics.put(taskId, (Epic) task);
                         break;
-                    case "SUBTASK":
-                        Subtask subtask = (Subtask) fromString(currentLine);
-
-                        if (subtask != null) {
-                            int subtaskId = subtask.getId();
-                            int epicId = subtask.getEpicId();
-                            currentId = Math.max(subtaskId, currentId);
-
-                            fm.epics.get(epicId).addSubtaskId(subtaskId);
-                            fm.subtasks.put(subtaskId, subtask);
-                        }
+                    case TaskType.SUBTASK:
+                        fm.subtasks.put(taskId, (Subtask) task);
                         break;
                 }
+                if (currentId < taskId) {
+                    currentId = taskId;
+                }
+            }
+            fm.id = currentId;
+
+            for (Subtask subtask : fm.subtasks.values()) {
+                Epic epic = fm.epics.get(subtask.getEpicId());
+
+                if (epic != null) {
+                    epic.addSubtaskId(subtask.getId());
+                }
+            }
+            String history = br.readLine();
+            if (history == null) {
+                return fm;
             }
         } catch (IOException e) {
             throw new ManagerLoadException("Ошибка чтения из файла.");
         }
-        ++currentId;
         return fm;
     }
 
     public static Task fromString(String value) {
         String[] line = value.split(",");
         int id = Integer.parseInt(line[0]);
-        String taskType = line[1];
+        TaskType taskType = TaskType.valueOf(line[1]);
         String name = line[2];
         TaskStatus status = TaskStatus.valueOf(line[3]);
         String description = line[4];
 
         switch (taskType) {
-            case "TASK":
+            case TaskType.TASK:
                 Task task = new Task();
-                task.setStatus(status);
                 task.setId(id);
+                task.setName(name);
+                task.setStatus(status);
+                task.setDescription(description);
                 return task;
-            case "EPIC":
+            case TaskType.EPIC:
                 Epic epic = new Epic();
                 epic.setId(id);
+                epic.setName(name);
+                epic.setStatus(status);
+                epic.setDescription(description);
                 return epic;
-            case "SUBTASK":
+            case TaskType.SUBTASK:
                 int epicId = Integer.parseInt(line[5]);
                 Subtask subtask = new Subtask(epicId);
                 subtask.setId(id);
+                subtask.setName(name);
                 subtask.setStatus(status);
+                subtask.setDescription(description);
                 return subtask;
             default:
                 throw new IllegalArgumentException("Неизвестный тип: " + taskType);

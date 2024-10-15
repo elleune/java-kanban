@@ -5,4 +5,3 @@ public class ManagerLoadException extends RuntimeException {
         super(message);
     }
 }
-
