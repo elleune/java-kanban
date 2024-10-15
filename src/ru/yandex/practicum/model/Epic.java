@@ -1,5 +1,6 @@
 package ru.yandex.practicum.model;
 
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -16,6 +17,14 @@ public class Epic extends Task {
 
     public void setSubtaskIds(int id) {
         subtaskIds.add(id);
+    }
+
+    public void addSubtaskId(int subtaskId) {
+        subtaskIds.add(subtaskId);
+    }
+
+    public TaskType getType() {
+        return TaskType.EPIC;
     }
 
     @Override

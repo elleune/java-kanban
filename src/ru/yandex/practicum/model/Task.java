@@ -8,6 +8,7 @@ public class Task {
     private TaskStatus taskStatus;
     private int id;
 
+
     public Task(TaskStatus taskStatus, int id) {
         this.taskStatus = taskStatus;
         this.id = id;
@@ -44,6 +45,9 @@ public class Task {
         return id;
     }
 
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
 
     public void setId(int id) {
         this.id = id;

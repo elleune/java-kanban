@@ -2,8 +2,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.service.Managers;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 @DisplayName("Менеджеры")
