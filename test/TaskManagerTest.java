@@ -1,5 +1,4 @@
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.model.Epic;
 import ru.yandex.practicum.model.Subtask;
@@ -10,34 +9,10 @@ import ru.yandex.practicum.service.TaskManager;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.yandex.practicum.service.Managers.getDefault;
 
-class TaskManagerTest {
-    private TaskStatus taskStatus;
+abstract class TaskManagerTest<T extends TaskManager> {
+    T taskManager;
     private int id;
-
-
-    @BeforeEach
-    void beforeEach() {
-        TaskManager manager = getDefault();
-
-        Task task1 = new Task(taskStatus, id);
-        Task task2 = new Task(taskStatus, id);
-
-        manager.createTask(task1);
-        manager.createTask(task2);
-
-        Epic epic1 = new Epic();
-        Epic epic2 = new Epic();
-
-        manager.createEpic(epic1);
-        manager.createEpic(epic2);
-
-        Subtask subtask1 = new Subtask(epic1.getId());
-        Subtask subtask2 = new Subtask(epic1.getId());
-
-        manager.createSubtask(subtask1);
-        manager.createSubtask(subtask2);
-
-    }
+    private TaskStatus taskStatus;
 
     @Test
     public void taskEqual() {

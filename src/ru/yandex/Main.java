@@ -4,6 +4,7 @@ import ru.yandex.practicum.model.Epic;
 import ru.yandex.practicum.model.Subtask;
 import ru.yandex.practicum.model.Task;
 import ru.yandex.practicum.model.TaskStatus;
+import ru.yandex.practicum.service.HistoryManager;
 import ru.yandex.practicum.service.Managers;
 import ru.yandex.practicum.service.TaskManager;
 
@@ -16,12 +17,12 @@ public class Main {
 
         TaskManager manager = Managers.getDefault();
 
+        HistoryManager historyManager = Managers.getDefaultHistory();
 
         Task task1 = new Task();
         Task task2 = new Task();
         manager.createTask(task1);
         manager.createTask(task2);
-
 
         Epic epic1 = new Epic();
         Epic epic2 = new Epic();
@@ -42,7 +43,7 @@ public class Main {
         System.out.println(manager.getSubtasks());
 
         Task task3 = new Task(TaskStatus.DONE, task1.getId());
-        Task task4 = new Task(TaskStatus.IN_PROGRESS,task2.getId());
+        Task task4 = new Task(TaskStatus.IN_PROGRESS, task2.getId());
 
         manager.updateTask(task3);
         manager.updateTask(task4);

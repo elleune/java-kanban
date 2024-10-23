@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
+    public int generateId();
 
     List<Task> getTasks();
 
@@ -58,5 +59,7 @@ public interface TaskManager {
     public Epic getEpicById(int id);
 
     public Subtask getSubtaskById(int id);
+
+    List<Task> getPrioritizedTasks();
 
 }
