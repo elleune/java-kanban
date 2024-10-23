@@ -2,6 +2,8 @@
 *.class
 
 # Log file
+<sourceFolder url="file://$MODULE_DIR$/yp" isTestSource="true" />
+<option name="activeLocationIds" />
 *.log
 
 # BlueJ files

@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
-    public DateTimeFormatter dateTimeFormatter;
     private String name;
     private String description;
     private TaskStatus taskStatus;

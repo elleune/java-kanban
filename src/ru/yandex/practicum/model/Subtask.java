@@ -29,8 +29,8 @@ public class Subtask extends Task {
         return getId() == subtask.getId();
     }
 
-    public Subtask(int id) {
-
+    public Subtask(int epicId) {
+        this.epicId = epicId;
     }
 
     public int getEpicId() {
@@ -39,13 +39,16 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
-        return String.format("Subtask %d: %s (%s) [Epic: %s], StartTime: %s, Duration: %d minutes",
-                getId(),
-                getName(),
-                getStatus(),
-                (getStartTime() != null ? getStartTime().format(formatter) : "Не указано"),
-                (getDuration() != null ? getDuration().toMinutes() : 0));
+        return "Subtask{" +
+                "epicId=" + getEpicId() +
+                ", description='" + getDescription() + '\'' +
+                ", id=" + getId() +
+                ", name='" + getName() + '\'' +
+                ", status=" + getStatus() + '\'' +
+                ", startTime='" + getStartTime() + '\'' +
+                ", endTime='" + getEndTime() + '\'' +
+                ", duration='" + getDuration() +
+                '}';
     }
 
     @Override
