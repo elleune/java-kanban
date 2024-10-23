@@ -4,32 +4,98 @@ import ru.yandex.practicum.model.Epic;
 import ru.yandex.practicum.model.Subtask;
 import ru.yandex.practicum.model.Task;
 import ru.yandex.practicum.model.TaskStatus;
+import ru.yandex.practicum.model.TaskType;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-
 public class InMemoryTaskManager implements TaskManager {
-    private static Integer id = 0;
 
-    private final Map<Integer, Task> tasks = new HashMap<>();
-    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
-    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    protected int id;
+    protected final Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, Subtask> subtasks = new HashMap<>();
+    protected final Map<Integer, Epic> epics = new HashMap<>();
 
-    private final HistoryManager historyManager;
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected Set<Task> prioritized = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
-    public InMemoryTaskManager() {
-        historyManager = Managers.getDefaultHistory();
-        id = 0;
+
+    public void updateEpicTime(Epic epic) {
+        List<Subtask> subtasks = getAllSubtasksByEpicId(epic.getId());
+
+        if (subtasks.isEmpty()) {
+            return;
+        }
+
+        Duration duration = Duration.ofMinutes(0);
+        for (Task subTask : subtasks) {
+            duration = duration.plus(subTask.getDuration());
+        }
+
+        LocalDateTime startTime = subtasks.getFirst().getStartTime();
+        LocalDateTime endTime = subtasks.getLast().getEndTime();
+
+        epic.setStartTime(startTime);
+        epic.setEndTime(endTime);
+        epic.setDuration(duration);
     }
 
+    public void addPrioritized(Task task) {
+        if (task.getType().equals(TaskType.EPIC)) return;
+        List<Task> taskList = getPrioritizedTasks();
+        if (task.getStartTime() != null && task.getEndTime() != null) {
+            for (Task task1 : taskList) {
+                if (task1.getId() == task.getId()) prioritized.remove(task1);
+                if (checkForIntersection(task, task1)) {
+                    return;
+                }
+            }
+            prioritized.add(task);
+        }
+    }
+
+    private boolean checkForIntersection(Task task1, Task task2) {
+        return !task1.getEndTime().isBefore(task2.getStartTime()) &&
+                !task1.getStartTime().isAfter(task2.getEndTime());
+    }
+
+    private void validatePrioritized(Task task) {
+        if (task == null || task.getStartTime() == null) return;
+        List<Task> taskList = getPrioritizedTasks();
+
+        for (Task someTask : taskList) {
+            if (someTask == task) {
+                continue;
+            }
+            boolean taskIntersection = checkForIntersection(task, someTask);
+
+            if (taskIntersection) {
+                throw new ManagerSaveException("Задачи - " + task.getId() + " и + " + someTask.getId()
+                        + "пересекаются");
+            }
+        }
+    }
+
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        return new ArrayList<>(prioritized);
+    }
 
     public int generateId() {
-
         return ++id;
+    }
+
+    public void setGenerateId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -238,4 +304,17 @@ public class InMemoryTaskManager implements TaskManager {
         return subtasks.get(id);
     }
 
+    @Override
+    public List<Subtask> getAllSubtasksByEpicId(int id) {
+        if (epics.containsKey(id)) {
+            List<Subtask> subtasksNew = new ArrayList<>();
+            Epic epic = epics.get(id);
+            for (int i = 0; i < epic.getSubtaskIds().size(); i++) {
+                subtasksNew.add(subtasks.get(epic.getSubtaskIds().get(i)));
+            }
+            return subtasksNew;
+        } else {
+            return Collections.emptyList();
+        }
+    }
 }

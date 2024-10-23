@@ -5,7 +5,8 @@ import ru.yandex.practicum.service.TaskManager;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class InMemoryTaskManagerTest {
+
+class InMemoryTaskManagerTest {
     private TaskManager taskManager;
 
     @BeforeEach
