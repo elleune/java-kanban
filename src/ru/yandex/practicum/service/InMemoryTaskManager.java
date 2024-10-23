@@ -6,22 +6,20 @@ import ru.yandex.practicum.model.Task;
 import ru.yandex.practicum.model.TaskStatus;
 import ru.yandex.practicum.model.TaskType;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
-
+import java.util.Set;
+import java.time.LocalDateTime;
+import java.time.Duration;
+import java.util.Comparator;
+import java.util.TreeSet;
 public class InMemoryTaskManager implements TaskManager {
 
     protected int id;
-    protected final Map<Integer, Task> tasks = new HashMap<>();
+   protected final   Map<Integer, Task> tasks = new HashMap<>();
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();
 
@@ -30,19 +28,22 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     public void updateEpicTime(Epic epic) {
-        List<Subtask> subtasks = getAllSubtasksByEpicId(epic.getId());
+        List<Task> subTasksList = getPrioritizedTasks().stream()
+                .filter(task -> task.getType().equals(TaskType.SUBTASK))
+                .filter(task -> ((Subtask) task).getEpicId() == epic.getId())
+                .toList();
 
-        if (subtasks.isEmpty()) {
+        if (subTasksList.isEmpty()) {
             return;
         }
 
         Duration duration = Duration.ofMinutes(0);
-        for (Task subTask : subtasks) {
+        for (Task subTask : subTasksList) {
             duration = duration.plus(subTask.getDuration());
         }
 
-        LocalDateTime startTime = subtasks.getFirst().getStartTime();
-        LocalDateTime endTime = subtasks.getLast().getEndTime();
+        LocalDateTime startTime = subTasksList.getFirst().getStartTime();
+        LocalDateTime endTime = subTasksList.getLast().getEndTime();
 
         epic.setStartTime(startTime);
         epic.setEndTime(endTime);
@@ -89,15 +90,12 @@ public class InMemoryTaskManager implements TaskManager {
     public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(prioritized);
     }
-
     public int generateId() {
         return ++id;
     }
-
     public void setGenerateId(int id) {
         this.id = id;
     }
-
     @Override
     public List<Task> getTasks() {
         return new ArrayList<>(tasks.values());
@@ -304,17 +302,4 @@ public class InMemoryTaskManager implements TaskManager {
         return subtasks.get(id);
     }
 
-    @Override
-    public List<Subtask> getAllSubtasksByEpicId(int id) {
-        if (epics.containsKey(id)) {
-            List<Subtask> subtasksNew = new ArrayList<>();
-            Epic epic = epics.get(id);
-            for (int i = 0; i < epic.getSubtaskIds().size(); i++) {
-                subtasksNew.add(subtasks.get(epic.getSubtaskIds().get(i)));
-            }
-            return subtasksNew;
-        } else {
-            return Collections.emptyList();
-        }
-    }
 }
