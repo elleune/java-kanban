@@ -1,25 +1,16 @@
 package ru.yandex.practicum.service;
 
-import ru.yandex.practicum.model.Epic;
-import ru.yandex.practicum.model.Subtask;
-import ru.yandex.practicum.model.Task;
-import ru.yandex.practicum.model.TaskStatus;
-import ru.yandex.practicum.model.TaskType;
+import ru.yandex.practicum.model.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.Set;
-import java.time.LocalDateTime;
 import java.time.Duration;
-import java.util.Comparator;
-import java.util.TreeSet;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class InMemoryTaskManager implements TaskManager {
 
     protected int id;
-   protected final   Map<Integer, Task> tasks = new HashMap<>();
+    protected final Map<Integer, Task> tasks = new HashMap<>();
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
     protected final Map<Integer, Epic> epics = new HashMap<>();
 
@@ -90,12 +81,15 @@ public class InMemoryTaskManager implements TaskManager {
     public List<Task> getPrioritizedTasks() {
         return new ArrayList<>(prioritized);
     }
+
     public int generateId() {
         return ++id;
     }
+
     public void setGenerateId(int id) {
         this.id = id;
     }
+
     @Override
     public List<Task> getTasks() {
         return new ArrayList<>(tasks.values());
