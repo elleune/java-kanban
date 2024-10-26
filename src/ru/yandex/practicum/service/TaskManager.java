@@ -63,5 +63,4 @@ public interface TaskManager {
     List<Task> getPrioritizedTasks();
 
     public List<Subtask> getAllSubtasksByEpicId(int id);
-
 }
