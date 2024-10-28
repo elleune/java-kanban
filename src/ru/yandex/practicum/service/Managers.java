@@ -20,12 +20,13 @@ public class Managers {
     }
 
     public static FileBackedTaskManager getFileBackedTaskManager() {
-        return new FileBackedTaskManager(new File ("fileBacked\\tasks.csv"));
+        return new FileBackedTaskManager(new File("fileBacked\\tasks.csv"));
     }
+
     public static Gson getGson() {
         GsonBuilder builder = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(Duration.class, new DurationAdapter());
         return builder.create();
     }
-   }
+}
