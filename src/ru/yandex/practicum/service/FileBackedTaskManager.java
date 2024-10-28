@@ -24,10 +24,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public File file;
     private static final String CSV_FILE = "id,type,name,status,description,epic\n";
 
+    HistoryManager historyManager;
+
     public FileBackedTaskManager(File file) {
-        super();
         this.file = file;
     }
+
 
     private void save() {
         try {
@@ -310,5 +312,29 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void deleteSubtaskById(int id) {
         super.deleteSubtaskById(id);
         save();
+    }
+
+    @Override
+    public Task getTaskById(int id) {
+        if (tasks.get(id) != null) {
+            historyManager.add(tasks.get(id));
+        }
+        return tasks.get(id);
+    }
+
+    @Override
+    public Epic getEpicById(int id) {
+        if (epics.get(id) != null) {
+            historyManager.add(epics.get(id));
+        }
+        return epics.get(id);
+    }
+
+    @Override
+    public Subtask getSubtaskById(int id) {
+        if (subtasks.get(id) != null) {
+            historyManager.add(subtasks.get(id));
+        }
+        return subtasks.get(id);
     }
 }

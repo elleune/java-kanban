@@ -28,6 +28,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     protected Set<Task> prioritized = new TreeSet<>(Comparator.comparing(Task::getStartTime));
 
+
     public void updateEpicTime(Epic epic) {
         List<Subtask> subtasks = getAllSubtasksByEpicId(epic.getId());
 

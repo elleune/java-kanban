@@ -1,34 +1,23 @@
 package ru.yandex.practicum.http.handlers;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import ru.yandex.practicum.http.Adapter.DurationAdapter;
-import ru.yandex.practicum.http.Adapter.LocalDateTimeAdapter;
 import ru.yandex.practicum.model.Epic;
-import ru.yandex.practicum.service.TaskManager;
+import ru.yandex.practicum.service.FileBackedTaskManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class EpicHandler extends BaseHttpHandler implements HttpHandler {
 
-    private final TaskManager taskManager;
-    private final Gson gson;
 
-    public EpicHandler(TaskManager taskManager) {
-        this.taskManager = taskManager;
-        this.gson = new GsonBuilder()
-                .registerTypeAdapter(Duration.class, new DurationAdapter())
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
-                .create();
+    public EpicHandler(FileBackedTaskManager manager, Gson gson) {
+        super(manager, gson);
     }
 
     @Override
@@ -52,7 +41,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         String query = exchange.getRequestURI().getQuery();
         if (query != null && query.startsWith("id=")) {
             int id = Integer.parseInt(query.substring(3));
-            Epic epic = taskManager.getEpicById(id);
+            Epic epic = manager.getEpicById(id);
             if (epic != null) {
                 String response = gson.toJson(epic);
                 sendText(exchange, response, 200);
@@ -60,7 +49,7 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
                 sendNotFound(exchange, "Не найден");
             }
         } else {
-            List<Epic> epics = taskManager.getAllEpics();
+            List<Epic> epics = manager.getAllEpics();
             String response = gson.toJson(epics);
             sendText(exchange, response, 200);
         }
@@ -73,10 +62,10 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
             Epic epic = gson.fromJson(json, Epic.class);
 
             if (epic.getId() > 0) {
-                taskManager.updateEpic(epic);
+                manager.updateEpic(epic);
                 sendText(exchange, gson.toJson(epic), 200);
             } else {
-                int id = taskManager.createEpic(epic);
+                int id = manager.createEpic(epic);
                 sendText(exchange, gson.toJson(epic), 201);
             }
         } catch (Exception e) {
@@ -88,9 +77,9 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         String query = exchange.getRequestURI().getQuery();
         if (query != null && query.startsWith("id=")) {
             int id = Integer.parseInt(query.substring(3));
-            Epic epic = taskManager.getEpicById(id);
+            Epic epic = manager.getEpicById(id);
             if (epic != null) {
-                taskManager.deleteEpicById(id);
+                manager.deleteEpicById(id);
                 sendText(exchange, "Epic с id " + id + " удален", 200);
             } else {
                 sendText(exchange, "Epic не найден", 404);

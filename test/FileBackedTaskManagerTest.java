@@ -134,7 +134,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        fileBackedTaskManager = Managers.getFileBackedTaskManager(file);
+        fileBackedTaskManager = Managers.getFileBackedTaskManager();
         taskManager = fileBackedTaskManager;
     }
 
@@ -173,7 +173,6 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
         assertNotNull(taskManager.getSubtasks(), "Список сабтаск пуст");
         assertNotNull(taskManager.getHistory(), "История пуста");
     }
-
 }
 
 
