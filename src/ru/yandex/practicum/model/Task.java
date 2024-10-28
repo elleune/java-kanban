@@ -1,5 +1,8 @@
 package ru.yandex.practicum.model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -7,6 +10,9 @@ public class Task {
     private String description;
     private TaskStatus taskStatus;
     private int id;
+    private LocalDateTime startTime;
+    private Duration duration;
+
 
     public Task(TaskStatus taskStatus, int id) {
         this.taskStatus = taskStatus;
@@ -14,6 +20,7 @@ public class Task {
     }
 
     public Task() {
+
     }
 
     public String getName() {
@@ -44,9 +51,43 @@ public class Task {
         return id;
     }
 
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (startTime == null || duration == null) {
+            return null;
+        }
+        return startTime.plus(duration);
+    }
+
+    public boolean isEpic() {
+        return false;
+    }
+
+    public boolean isSubtask() {
+        return false;
     }
 
     @Override
@@ -69,11 +110,25 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
-                "description='" + description + '\'' +
-                ", id=" + id +
-                ", name='" + name + '\'' +
-                ", status=" + taskStatus +
-                '}';
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        return String.format("Task: %d,%s,%s,%s,%s,%d",
+                getId(),
+                getName(),
+                getStatus(),
+                getDescription(),
+                (getStartTime() != null ? getStartTime().format(formatter) : ""),
+                (getDuration() != null ? getDuration().toMinutes() : 0));
+    }
+
+    public String toFileString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE_TIME;
+        return String.format("%d,%s,%s,%s,%s,%s,%d",
+                getId(),
+                getClass().getSimpleName(),
+                getName(),
+                getStatus(),
+                getDescription(),
+                (getStartTime() != null ? getStartTime().format(formatter) : ""),
+                (getDuration() != null ? getDuration().toMinutes() : 0));
     }
 }

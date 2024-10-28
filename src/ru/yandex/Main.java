@@ -4,11 +4,35 @@ import ru.yandex.practicum.model.Epic;
 import ru.yandex.practicum.model.Subtask;
 import ru.yandex.practicum.model.Task;
 import ru.yandex.practicum.model.TaskStatus;
+import ru.yandex.practicum.service.HistoryManager;
 import ru.yandex.practicum.service.Managers;
 import ru.yandex.practicum.service.TaskManager;
 
 
 public class Main {
+    private static void printAllTasks(TaskManager manager) {
+        System.out.println("Задачи:");
+        for (Task task : manager.getTasks()) {
+            System.out.println(task);
+        }
+        System.out.println("Эпики:");
+        for (Task epic : manager.getEpics()) {
+            System.out.println(epic);
+
+            for (Task task : manager.getEpicSubtasks(epic.getId())) {
+                System.out.println("--> " + task);
+            }
+        }
+        System.out.println("Подзадачи:");
+        for (Task subtask : manager.getSubtasks()) {
+            System.out.println(subtask);
+        }
+
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+    }
 
     public static void main(String[] args) {
 
@@ -16,12 +40,12 @@ public class Main {
 
         TaskManager manager = Managers.getDefault();
 
+        HistoryManager historyManager = Managers.getDefaultHistory();
 
         Task task1 = new Task();
         Task task2 = new Task();
         manager.createTask(task1);
         manager.createTask(task2);
-
 
         Epic epic1 = new Epic();
         Epic epic2 = new Epic();
@@ -42,7 +66,7 @@ public class Main {
         System.out.println(manager.getSubtasks());
 
         Task task3 = new Task(TaskStatus.DONE, task1.getId());
-        Task task4 = new Task(TaskStatus.IN_PROGRESS,task2.getId());
+        Task task4 = new Task(TaskStatus.IN_PROGRESS, task2.getId());
 
         manager.updateTask(task3);
         manager.updateTask(task4);
@@ -84,29 +108,5 @@ public class Main {
         System.out.println(manager.getSubtasks());
         System.out.println("Список задач пуст");
 
-    }
-
-    private static void printAllTasks(TaskManager manager) {
-        System.out.println("Задачи:");
-        for (Task task : manager.getTasks()) {
-            System.out.println(task);
-        }
-        System.out.println("Эпики:");
-        for (Task epic : manager.getEpics()) {
-            System.out.println(epic);
-
-            for (Task task : manager.getEpicSubtasks(epic.getId())) {
-                System.out.println("--> " + task);
-            }
-        }
-        System.out.println("Подзадачи:");
-        for (Task subtask : manager.getSubtasks()) {
-            System.out.println(subtask);
-        }
-
-        System.out.println("История:");
-        for (Task task : manager.getHistory()) {
-            System.out.println(task);
-        }
     }
 }

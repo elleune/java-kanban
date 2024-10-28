@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class HistoryManagerTest {
     private HistoryManager historyManager;
     private TaskManager manager;
+    private TaskStatus taskStatus;
+    private int id;
 
     @BeforeEach
     void setUp() {
@@ -25,7 +27,7 @@ public class HistoryManagerTest {
 
     @Test
     void checkSizeOfRequestHistory() {
-        Task task = new Task();
+        Task task = new Task(taskStatus, id);
         final int sizeFromRequestHistoryShouldBe = 1;
         final int sizeForCheckRequestSize = 10;
 
@@ -42,7 +44,7 @@ public class HistoryManagerTest {
     @Test
     void addHistoryList() {
 
-        Task task = new Task();
+        Task task = new Task(taskStatus, id);
         historyManager.add(task);
         final List<Task> history = historyManager.getHistory();
         assertNotNull(history, "История не пустая.");
@@ -92,7 +94,7 @@ public class HistoryManagerTest {
     @Test
     void ensureHistoryCapacityIsNotLimited() {
         for (int i = 0; i < 15; i++) {
-            manager.createTask(new Task());
+            manager.createTask(new Task(taskStatus, id));
         }
         for (Task task : manager.getAllTasks()) {
             manager.getTaskById(task.getId());
